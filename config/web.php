@@ -42,14 +42,15 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
+            'class' => 'app\components\TenantUrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'tenantBySubdomain' => true,
+            'excludedDomains' => ['localhost', '127.0.0.1'],
             'rules' => [
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
