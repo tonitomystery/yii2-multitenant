@@ -5,6 +5,7 @@
 
 use app\assets\AppAsset;
 use app\widgets\Alert;
+use app\widgets\TenantSelector;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
@@ -36,8 +37,19 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
+    
+    // Mostrar el selector de tenants si el usuario está autenticado
+    if (!Yii::$app->user->isGuest) {
+        echo '<div class="navbar-nav me-auto">';
+        echo TenantSelector::widget([
+            'selectedId' => Yii::$app->request->get('tenant_id'),
+            'inputName' => 'tenant_id',
+        ]);
+        echo '</div>';
+    }
+    
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
+        'options' => ['class' => 'navbar-nav ms-auto'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
