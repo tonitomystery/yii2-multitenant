@@ -78,7 +78,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect(['site/select-tenant']);
         }
 
         $model->password = '';
@@ -97,12 +97,35 @@ class SiteController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+            return $this->redirect(['site/select-tenant']);
         }
 
         return $this->render('signup', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * Selects a tenant for the user.
+     *
+     * @return mixed
+     */
+    public function actionSelectTenant()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['login']);
+        }
+
+        $user = Yii::$app->user->identity;
+        $tenants = $user->tenants;
+
+        if (empty($tenants)) {
+            return $this->redirect(['tenant/create']);
+        }
+
+        // Auto-select first tenant
+        $tenant = $tenants[0];
+        return $this->redirect(['site/index', 'tenant_id' => $tenant->id]);
     }
 
     /**
