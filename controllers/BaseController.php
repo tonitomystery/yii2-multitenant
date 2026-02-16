@@ -47,7 +47,7 @@ class BaseController extends Controller
 
             // Verify user belongs to this tenant
             if (!Yii::$app->user->isGuest) {
-                $userId = Yii::$app->user->id;
+                $userId = $this->getUser()->id;
                 $belongsToTenant = TenantUser::find()
                     ->where(['tenant_id' => $this->tenant_id, 'user_id' => $userId])
                     ->exists();
