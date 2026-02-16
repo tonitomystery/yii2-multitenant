@@ -4,15 +4,12 @@ namespace app\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
-use yii\web\Controller;
-use yii\web\Response;
-use app\models\Tenant;
 use app\models\TenantUser;
 
 /**
  * DashboardController displays the main dashboard for authenticated users.
  */
-class DashboardController extends Controller
+class DashboardController extends BaseController
 {
     /**
      * {@inheritdoc}
@@ -40,20 +37,15 @@ class DashboardController extends Controller
     public function actionIndex()
     {
         $user = Yii::$app->user->identity;
-        $tenantId = Yii::$app->session->get('tenant_id');
-        $tenantName = Yii::$app->session->get('tenant_name');
 
-        // Get current tenant if set
-        $currentTenant = null;
-        if ($tenantId) {
-            $currentTenant = Tenant::findOne($tenantId);
-        }
+        // Get current tenant from BaseController
+        $currentTenant = $this->tenant;
 
         // Get user's tenants
         $tenants = $user->tenants;
 
         // Get tenant statistics
-        $stats = $this->getTenantStats($tenantId);
+        $stats = $this->getTenantStats($this->tenant_id);
 
         return $this->render('index', [
             'user' => $user,
@@ -84,7 +76,7 @@ class DashboardController extends Controller
             ->count();
 
         // Count total tenants for current user
-        $totalTenants = Yii::$app->user->identity->getTenants()->count();
+        $totalTenants = $this->getUser()->getTenants()->count();
 
         return [
             'total_users' => $totalUsers,
