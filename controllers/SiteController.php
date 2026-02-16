@@ -62,6 +62,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        // if (!Yii::$app->user->isGuest) {
+        //     return $this->redirect(['site/select-tenant']);
+        // }
         return $this->render('index');
     }
 
@@ -73,7 +76,7 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect(['site/select-tenant']);
         }
 
         $model = new LoginForm();
@@ -125,7 +128,7 @@ class SiteController extends Controller
 
         // Auto-select first tenant
         $tenant = $tenants[0];
-        return $this->redirect(['site/index', 'tenant_id' => $tenant->id]);
+        return $this->redirect(['dashboard/index', 'tenant_id' => $tenant->id]);
     }
 
     /**
