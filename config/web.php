@@ -48,8 +48,16 @@ $config = [
             'showScriptName' => false,
             'tenantBySubdomain' => true,
             'excludedDomains' => ['localhost', '127.0.0.1'],
-            'rules' => [
-            ],
+            // 'rules' => [
+            //     'site/<action:[\w\-]+>' => 'site/<action>',
+            //     'tenant/<action:[\w\-]+>' => 'tenant/<action>',
+            //     'site/logout' => 'site/logout',
+            //     'site/login' => 'site/login',
+            //     // Tenant rules with prefix to avoid ambiguity
+            //     't/<tenant_id:[\w\-]+>/<controller:[\w\-]+>/<action:[\w\-]+>' => '<controller>/<action>',
+            //     't/<tenant_id:[\w\-]+>/<controller:[\w\-]+>' => '<controller>/index',
+            //     't/<tenant_id:[\w\-]+>' => 'site/index',
+            // ],
         ],
     ],
     'params' => $params,
